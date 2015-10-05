@@ -149,6 +149,6 @@ class { 'nova::compute::libvirt':
   migration_support => true,
   # Narrow down listening if not needed for troubleshooting
   vncserver_listen  => '0.0.0.0',
-  libvirt_virt_type => 'kvm',
+  libvirt_virt_type => 'qemu',
 }
 
