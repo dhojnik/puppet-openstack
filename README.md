@@ -35,6 +35,7 @@ mysql> GRANT ALL PRIVILEGES ON murano.* TO 'murano'@'%' IDENTIFIED BY 'MURANO_DB
 * Update local_setting.py accordingly. #TODO: add sed commands 
 * `tox -e venv -- python manage.py syncdb`
 * `tox -e venv -- python manage.py runserver <IP:PORT>`
+* `cd ~/murano && git clone git://git.openstack.org/openstack/murano-apps && tox -e venv -- murano-manage --config-file ./etc/murano/murano.conf import-package ../murano-apps/%APPLICATION_DIRECTORY_NAME%`
 
 
 
