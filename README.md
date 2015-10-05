@@ -7,7 +7,7 @@ Steps:
 * `sudo apt-get -y install puppet`
 * `sudo puppet module install puppetlabs/apt && sudo puppet apply 01_base.pp`
 * `sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys <XXXXX>`
-* `sudo apt-get updat` to verify there are no invalid gpg keys
+* `sudo apt-get update` to verify there are no invalid gpg keys
 * `sudo puppet module install puppetlabs/mysql && sudo puppet apply 02_mysql.pp`
 * `sudo puppet module install openstack/keystone --version ">=6.0.0 <7.0.0" && sudo puppet apply 03_keystone.pp`
 * `sudo puppet apply 04_rabbitmq.pp`
