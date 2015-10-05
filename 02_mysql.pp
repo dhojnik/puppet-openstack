@@ -1,4 +1,5 @@
 $admin_password = 'rajalokan'
+
 class { 'mysql::server':
   root_password    => $admin_password,
   override_options => { 'mysqld' => { 'bind_address'           => '0.0.0.0',

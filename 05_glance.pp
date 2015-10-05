@@ -38,6 +38,8 @@ if !$local_ip {
 
 ######## Glance
 
+# TODO: Fix deprecation warnings
+
 class { 'glance::api':
   verbose             => true,
   keystone_tenant     => 'services',

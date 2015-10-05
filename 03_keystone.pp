@@ -1,3 +1,5 @@
+# TODO: cleanup unused variables
+
 $admin_password = 'rajalokan'
 $demo_password = $admin_password
 $admin_token = '4b46b807-ab35-4a67-9f5f-34bbff2dd439'
@@ -106,3 +108,26 @@ keystone_user_role { 'demo@demo':
   roles  => ['demo'],
 }
 
+######## Keystone files to be sourced
+
+file { '/home/okan/keystonerc_admin':
+  ensure  => present,
+  content =>
+"export OS_AUTH_URL=http://${local_ip}:35357/v2.0
+export OS_USERNAME=admin
+export OS_PASSWORD=${admin_password}
+export OS_TENANT_NAME=admin
+export OS_VOLUME_API_VERSION=2
+",
+}
+
+file { '/home/okan/keystonerc_demo':
+  ensure  => present,
+  content =>
+"export OS_AUTH_URL=http://${local_ip}:35357/v2.0
+export OS_USERNAME=demo
+export OS_PASSWORD=${demo_password}
+export OS_TENANT_NAME=demo
+export OS_VOLUME_API_VERSION=2
+",
+}

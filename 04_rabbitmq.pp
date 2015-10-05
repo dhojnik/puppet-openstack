@@ -2,6 +2,8 @@ $admin_password = 'rajalokan'
 
 ######## RabbitMQ
 
+# TODO: fix warnings
+
 class { '::rabbitmq':
   service_ensure    => 'running',
   port              => '5672',
