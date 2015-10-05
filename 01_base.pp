@@ -5,9 +5,7 @@ apt::source { 'ubuntu-cloud':
   location          =>  'http://ubuntu-cloud.archive.canonical.com/ubuntu',
   repos             =>  'main',
   release           =>  'trusty-updates/kilo',
-  include           =>  {
-    'src'   => false,
-  },
+  include_src       => false,
   required_packages =>  'ubuntu-cloud-keyring',
 }
 ->
