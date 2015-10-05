@@ -28,6 +28,13 @@ mysql> GRANT ALL PRIVILEGES ON murano.* TO 'murano'@'%' IDENTIFIED BY 'MURANO_DB
 * `openstack service create --name murano --description "Application Catalog Service" application_catalog`
 * `openstack endpoint create --publicurl http://localhost:8082 --internalurl http://localhost:8082 --adminurl http://localhost:8082 --region regionOne application_catalog`
 * `sudo puppet apply 09_murano.pp`
+* `sudo apt-get install -y libffi-dev libxml2-dev libxslt1-dev libssl-dev`
+* `mkdir -p ~/murano && cd ~/murano && git clone git://git.openstack.org/openstack/murano-dashboard && git clone git://git.openstack.org/openstack/horizon && cd ~/murano/horizon && tox -e venv -- pip install -e ../murano-dashboard`
+* `cp ../murano-dashboard/muranodashboard/local/_50_murano.py openstack_dashboard/local/enabled/`
+* `cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py`
+* Update local_setting.py accordingly. #TODO: add sed commands 
+* `tox -e venv -- python manage.py syncdb`
+* `tox -e venv -- python manage.py runserver <IP:PORT>`
 
 
 
