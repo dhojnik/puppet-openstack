@@ -3,6 +3,7 @@ Puppet scripts to setup opinionated Ubuntu based OpenStack cloud customized for 
 
 Steps:
 * `sudo apt-get update && sudo apt-get upgrade`
+* `git clone https://github.com/rajalokan/puppet-openstack.git && cd puppet-openstack`
 * `sudo apt-get -y install puppet`
 * `sudo puppet module install puppetlabs/apt && sudo puppet apply 01_base.pp`
 * `sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys <XXXXX>`
