@@ -16,11 +16,8 @@ Steps:
 * `sudo puppet module install openstack/neutron --version ">=6.0.0 <7.0.0" && sudo puppet module install example42/network && sudo puppet module install saz/memcached`
 * `sudo puppet apply 07_neutron.pp`
 * `sudo puppet apply 08_dashboard.pp`
+* `mysql -u root -p -e "CREATE DATABASE murano; GRANT ALL PRIVILEGES ON murano.* TO 'murano'@'localhost' IDENTIFIED BY 'rajalokan'; GRANT ALL PRIVILEGES ON murano.* TO 'murano'@'%' IDENTIFIED BY 'rajalokan'"`
 * `sudo git clone https://github.com/openstack/puppet-murano.git /etc/puppet/modules/murano && sudo puppet apply 09_murano.pp`
-* ```mysql -u root -p
-mysql> CREATE DATABASE murano;
-mysql> GRANT ALL PRIVILEGES ON murano.* TO 'murano'@'localhost' IDENTIFIED BY 'MURANO_DBPASS';
-mysql> GRANT ALL PRIVILEGES ON murano.* TO 'murano'@'%' IDENTIFIED BY 'MURANO_DBPASS'; ```
 * `openstack user create --password-prompt murano`
 * `penstack role add --project services --user murano admin`
 * `openstack service create --name murano --description "Application Catalog Service" application_catalog`
