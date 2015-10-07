@@ -13,9 +13,7 @@ Steps:
 * `sudo puppet apply 04_rabbitmq.pp`
 * `sudo puppet module install openstack/glance --version ">=6.0.0 <7.0.0" && sudo puppet apply 05_glance.pp`
 * `sudo puppet module install openstack/nova --version ">=6.0.0 <7.0.0" && sudo puppet apply 06_nova.pp`
-* `sudo puppet module install openstack/neutron --version ">=6.0.0 <7.0.0"`
-* `sudo puppet module install example42/network`
-* `sudo puppet module install saz/memcached`
+* `sudo puppet module install openstack/neutron --version ">=6.0.0 <7.0.0" && sudo puppet module install example42/network && sudo puppet module install saz/memcached`
 * `sudo puppet apply 07_neutron.pp`
 * `sudo puppet apply 08_dashboard.pp`
 * `sudo git clone https://github.com/openstack/puppet-murano.git /etc/puppet/modules/murano && sudo puppet apply 09_murano.pp`
