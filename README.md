@@ -18,17 +18,12 @@ Steps:
 * `sudo puppet apply 08_dashboard.pp`
 * `mysql -u root -p -e "CREATE DATABASE murano; GRANT ALL PRIVILEGES ON murano.* TO 'murano'@'localhost' IDENTIFIED BY 'rajalokan'; GRANT ALL PRIVILEGES ON murano.* TO 'murano'@'%' IDENTIFIED BY 'rajalokan'"`
 * `sudo git clone https://github.com/openstack/puppet-murano.git /etc/puppet/modules/murano && sudo puppet apply 09_murano.pp`
-* `openstack user create --password-prompt murano`
-* `penstack role add --project services --user murano admin`
-* `openstack service create --name murano --description "Application Catalog Service" application_catalog`
-* `openstack endpoint create --publicurl http://localhost:8082 --internalurl http://localhost:8082 --adminurl http://localhost:8082 --region regionOne application_catalog`
-* `sudo puppet apply 09_murano.pp`
 * `sudo apt-get install -y libffi-dev libxml2-dev libxslt1-dev libssl-dev`
-* `mkdir -p ~/murano && cd ~/murano && git clone git://git.openstack.org/openstack/murano-dashboard && git clone git://git.openstack.org/openstack/horizon && cd ~/murano/horizon && tox -e venv -- pip install -e ../murano-dashboard`
-* `cp ../murano-dashboard/muranodashboard/local/_50_murano.py openstack_dashboard/local/enabled/`
-* `cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py`
+* `mkdir -p ~/murano && cd ~/murano && git clone git://git.openstack.org/openstack/murano-dashboard && git clone git://git.openstack.org/openstack/horizon && sudo pip install tox && cd ~/murano/horizon && tox -e venv -- pip install -e ../murano-dashboard`
+* `cd ~/murano/horizon && cp ../murano-dashboard/muranodashboard/local/_50_murano.py openstack_dashboard/local/enabled/`
+* `cd ~/murano/horizon && cp openstack_dashboard/local/local_settings.py.example openstack_dashboard/local/local_settings.py`
 * Update local_setting.py accordingly. #TODO: add sed commands 
-* `tox -e venv -- python manage.py syncdb`
+* `tox -e venv -- python manage.py syncdb --noinput`
 * `tox -e venv -- python manage.py runserver <IP:PORT>`
 * `cd ~/murano && git clone git://git.openstack.org/openstack/murano-apps && tox -e venv -- murano-manage --config-file ./etc/murano/murano.conf import-package ../murano-apps/%APPLICATION_DIRECTORY_NAME%`
 
