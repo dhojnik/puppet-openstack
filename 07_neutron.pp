@@ -10,27 +10,22 @@ $interface = 'eth0'
 $ext_bridge_interface = 'br-ex'
 $dns_nameservers = ['8.8.8.8', '8.8.4.4']
 $private_subnet_cidr = '10.0.0.0/24'
-$public_subnet_cidr = '192.168.209.0/24'
-$public_subnet_gateway = '192.168.209.2'
-$public_subnet_allocation_pools = ['start=192.168.209.30,end=192.168.209.50']
+$public_subnet_cidr = '192.168.19.0/24'
+$public_subnet_gateway = '192.168.19.1'
+$public_subnet_allocation_pools = ['start=192.168.19.30,end=192.168.19.50']
 
 # Note: this is executed on the master
-$gateway = generate('/bin/sh',
-'-c', '/sbin/ip route show | /bin/grep default | /usr/bin/awk \'{print $3}\'')
+$gateway = generate('/bin/sh', '-c', '/sbin/ip route show | /bin/grep default | /usr/bin/awk \'{print $3}\'')
 
 $ext_bridge_interface_repl = regsubst($ext_bridge_interface, '-', '_')
-$ext_bridge_interface_ip = inline_template(
-"<%= scope.lookupvar('::ipaddress_${ext_bridge_interface_repl}') -%>")
+$ext_bridge_interface_ip = inline_template("<%= scope.lookupvar('::ipaddress_${ext_bridge_interface_repl}') -%>")
 
 if $ext_bridge_interface_ip {
   $local_ip = $ext_bridge_interface_ip
-  $local_ip_netmask = inline_template(
-"<%= scope.lookupvar('::netmask_${ext_bridge_interface_repl}') -%>")
+  $local_ip_netmask = inline_template("<%= scope.lookupvar('::netmask_${ext_bridge_interface_repl}') -%>")
 } else {
-  $local_ip = inline_template(
-"<%= scope.lookupvar('::ipaddress_${interface}') -%>")
-  $local_ip_netmask = inline_template(
-"<%= scope.lookupvar('::netmask_${interface}') -%>")
+  $local_ip = inline_template("<%= scope.lookupvar('::ipaddress_${interface}') -%>")
+  $local_ip_netmask = inline_template("<%= scope.lookupvar('::netmask_${interface}') -%>")
 }
 
 $cinder_loopback_base_dir = '/var/lib/cinder'
