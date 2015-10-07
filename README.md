@@ -5,7 +5,7 @@ Steps:
 * `sudo apt-get update && sudo apt-get upgrade`
 * `git clone https://github.com/rajalokan/puppet-openstack.git && cd puppet-openstack`
 * `sudo apt-get -y install puppet`
-* `sudo puppet module install puppetlabs/apt && sudo puppet apply 01_base.pp`
+* `sudo puppet module install puppetlabs/apt && sudo touch /etc/puppet/hiera.yaml && sudo puppet apply 01_base.pp`
 * `sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys <XXXXX>`
 * `sudo apt-get update` to verify there are no invalid gpg keys
 * `sudo puppet module install puppetlabs/mysql && sudo puppet apply 02_mysql.pp`
