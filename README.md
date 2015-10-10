@@ -2,7 +2,7 @@
 Puppet scripts to setup opinionated Ubuntu based OpenStack cloud customized for my needs. 
 
 Steps:
-* `sudo apt-get update && sudo apt-get upgrade`
+* `sudo apt-get -y update && sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade`
 * `git clone https://github.com/rajalokan/puppet-openstack.git && cd puppet-openstack`
 * `sudo apt-get -y install puppet`
 * `sudo puppet module install puppetlabs/apt && sudo touch /etc/puppet/hiera.yaml && sudo puppet apply 01_base.pp`
