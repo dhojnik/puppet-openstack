@@ -4,19 +4,8 @@ $admin_password = 'rajalokan'
 $demo_password = $admin_password
 $admin_token = '4b46b807-ab35-4a67-9f5f-34bbff2dd439'
 $region_name = 'RegionOne'
-
-
 $interface = 'eth0'
 $ext_bridge_interface = 'br-ex'
-$dns_nameservers = ['8.8.8.8', '8.8.4.4']
-$private_subnet_cidr = '10.0.0.0/24'
-$public_subnet_cidr = '192.168.209.0/24'
-$public_subnet_gateway = '192.168.209.2'
-$public_subnet_allocation_pools = ['start=192.168.209.30,end=192.168.209.50']
-
-# Note: this is executed on the master
-$gateway = generate('/bin/sh',
-'-c', '/sbin/ip route show | /bin/grep default | /usr/bin/awk \'{print $3}\'')
 
 $ext_bridge_interface_repl = regsubst($ext_bridge_interface, '-', '_')
 $ext_bridge_interface_ip = inline_template("<%= scope.lookupvar('::ipaddress_${ext_bridge_interface_repl}') -%>")
@@ -110,7 +99,7 @@ keystone_user_role { 'demo@demo':
 
 ######## Keystone files to be sourced
 
-file { '/home/okan/keystonerc_admin':
+file { '/home/ubuntu/keystonerc_admin':
   ensure  => present,
   content =>
 "export OS_AUTH_URL=http://${local_ip}:35357/v2.0
@@ -121,7 +110,7 @@ export OS_VOLUME_API_VERSION=2
 ",
 }
 
-file { '/home/okan/keystonerc_demo':
+file { '/home/ubuntu/keystonerc_demo':
   ensure  => present,
   content =>
 "export OS_AUTH_URL=http://${local_ip}:35357/v2.0
