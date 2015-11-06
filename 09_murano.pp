@@ -1,41 +1,25 @@
 $admin_password="rajalokan"
+$region_name = 'RegionOne'
 
-class { 'apt': }
+# Evaluate local_ip
+$interface = 'eth0'
+$ext_bridge_interface = 'br-ex'
+$ext_bridge_interface_repl = regsubst($ext_bridge_interface, '-', '_')
+$ext_bridge_interface_ip = inline_template("<%= scope.lookupvar('::ipaddress_${ext_bridge_interface_repl}') -%>")
 
-apt::source { 'nectar-ubuntu':
-    location            => "http://download.rc.nectar.org.au/nectar-ubuntu",
-    repos               => "main",
-    release             => "trusty-kilo-testing",
-    include_src         => false,
+if $ext_bridge_interface_ip {
+  $local_ip = $ext_bridge_interface_ip
+  $local_ip_netmask = inline_template("<%= scope.lookupvar('::netmask_${ext_bridge_interface_repl}') -%>")
+} else {
+  $local_ip = inline_template("<%= scope.lookupvar('::ipaddress_${interface}') -%>")
+  $local_ip_netmask = inline_template("<%= scope.lookupvar('::netmask_${interface}') -%>")
 }
-->
-exec { 'add-key':
-    command             => "/usr/bin/wget -qO - http://download.rc.nectar.org.au/nectar-custom.gpg | sudo apt-key add -"
+
+if !$local_ip {
+  fail('$local_ip variable must be set')
 }
 
-#class { "::mysql::server": }
-#
-#class { "murano::db::mysql":
-#    passwor
-#
-##exec { 'apt-update':
-##    command             => "/usr/bin/apt-get update"
-##}
-##-> Package <| |>
-##
-class { "murano":
-    verbose             => true,
-    admin_password      => $admin_password,
-    package_ensure      => 'latest',
-    rabbit_os_host      => "192.168.19.2",
-    rabbit_os_port      => "5672",
-    rabbit_os_user      => "openstack",
-    rabbit_os_password  => $admin_password,
-}
-$admin_password="rajalokan"
-$region_name="RegionOne"
-$local_ip="192.168.19.2"
-
+######## Murano
 
 #class { 'apt': }
 #
@@ -54,56 +38,40 @@ $local_ip="192.168.19.2"
 #    command             => "/usr/bin/apt-get update"
 #}
 #-> Package <| |>
-#
-#keystone_service { 'murano':
-#  ensure        => present,
-#  type          => 'application_catalog',
-#  description   => "Application Catalog Service",
-#}
-#
+
+keystone_service { 'murano':
+  ensure      => present,
+  type        => 'application_catalog',
+  description => 'Application Catalog Service',
+}
+
 #keystone_endpoint { "${region_name}/application_catalog":
-#  ensure        => present,
-#  public_url    => "http://${local_ip}:8082",
-#  admin_url     => "http://${local_ip}:8082",
-#  internal_url  => "http://${local_ip}:8082",
+#  ensure       => present,
+#  public_url   => "http://${local_ip}:8774/v2/%(tenant_id)s",
+#  admin_url    => "http://${local_ip}:8774/v2/%(tenant_id)s",
+#  internal_url => "http://${local_ip}:8774/v2/%(tenant_id)s",
 #}
-#
-#keystone_user { 'murano':
-#  ensure        => present,
-#  enabled       => True,
-#  password      => $admin_password,
-#  email         => 'murano@openstack',
-#}
-#
-#keystone_user_role { 'murano@services':
-#  ensure        => present,
-#  roles         => ['admin'],
-#}
-#
-#class { "::mysql::server": }
-#
-#class { "murano::db::mysql":
-#    passwor
-#
-class { "murano":
-    verbose             => true,
-    admin_password      => $admin_password,
-    package_ensure      => 'latest',
-    rabbit_os_host      => "${local_ip}",
-    rabbit_os_port      => "5672",
-    rabbit_os_user      => "openstack",
-    rabbit_os_password  => $admin_password,
-    rabbit_own_host     => "${local_ip}",
-    rabbit_own_user     => "openstack",
-    rabbit_own_password => $admin_password,
-    auth_uri            => "${local_ip}:5000/v2.0/",
-    identity_uri        => "${local_ip}:35357/v2.0",
-    service_host        => "${local_ip}",
-    database_connection => "mysql://murano:$admin_password@${local_ip}:3306/murano",
+
+keystone_user { 'murano':
+  ensure   => present,
+  enabled  => True,
+  password => $admin_password,
+  email    => 'murano@openstack',
 }
 
-class { 'murano::api':
-    host                => "${local_ip}",
+keystone_user_role { 'murano@services':
+  ensure => present,
+  roles  => ['admin'],
 }
 
-class { 'murano::engine': }
+#class { "murano":
+#    verbose             => true,
+#    database_connection => "mysql://murano:$admin_password@${local_ip}:3306/murano",
+#}
+
+class { '::mysql::server': }
+
+class { 'murano::db::mysql':
+  password      => $admin_password,
+  allowed_hosts => '%',
+}
