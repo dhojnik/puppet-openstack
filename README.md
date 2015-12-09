@@ -2,18 +2,22 @@
 Puppet scripts to setup opinionated Ubuntu based OpenStack cloud customized for my needs. 
 
 Steps:
+* `LOCAL_HOSTNAME=`hostname -s`; if [ -z "`grep ^127.0.0.1 /etc/hosts | grep $LOCAL_HOSTNAME`" ]; then sudo sed -i "s/\(^127.0.0.1.*\)/\1 $LOCAL_HOSTNAME/" /etc/hosts; fi`
 * `sudo apt-get -y update && sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade`
+* `sudo apt-get -y install git mosh linux-image-generic-lts-utopic make htop libffi-dev libssl-dev`
+* `curl -L raw.githubusercontent.com/rajalokan/dotfiles/master/setup-workspace.sh | bash && exit`
+* `sudo -H pip install -U pip requests pyopenssl ndg-httpsclient pyasn1`
 * `git clone https://github.com/rajalokan/puppet-openstack.git && cd puppet-openstack`
 * `sudo apt-get -y install puppet`
 * `sudo puppet module install puppetlabs/apt && sudo touch /etc/puppet/hiera.yaml && sudo puppet apply 01_base.pp`
 * `sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 5EDB1B62EC4926EA`
 * `sudo apt-get update` to verify there are no invalid gpg keys
 * `sudo puppet module install puppetlabs/mysql && sudo puppet apply 02_mysql.pp`
-* `sudo puppet module install openstack/keystone --version ">=6.0.0 <7.0.0" && sudo puppet apply 03_keystone.pp`
+* `sudo puppet module install openstack/keystone && sudo puppet apply 03_keystone.pp`
 * `sudo puppet apply 04_rabbitmq.pp`
-* `sudo puppet module install openstack/glance --version ">=6.0.0 <7.0.0" && sudo puppet apply 05_glance.pp`
-* `sudo puppet module install openstack/nova --version ">=6.0.0 <7.0.0" && sudo puppet apply 06_nova.pp`
-* `sudo puppet module install openstack/neutron --version ">=6.0.0 <7.0.0" && sudo puppet module install example42/network && sudo puppet module install saz/memcached`
+* `sudo puppet module install openstack/glance && sudo puppet apply 05_glance.pp`
+* `sudo puppet module install openstack/nova && sudo puppet apply 06_nova.pp`
+* `sudo puppet module install openstack/neutron && sudo puppet module install example42/network && sudo puppet module install saz/memcached`
 * `sudo puppet apply 07_neutron.pp`
 * `sudo puppet apply 08_dashboard.pp`
 * `mysql -u root -p -e "CREATE DATABASE murano; GRANT ALL PRIVILEGES ON murano.* TO 'murano'@'localhost' IDENTIFIED BY 'rajalokan'; GRANT ALL PRIVILEGES ON murano.* TO 'murano'@'%' IDENTIFIED BY 'rajalokan'"`
