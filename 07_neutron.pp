@@ -18,9 +18,9 @@ if $ext_bridge_interface_ip {
 $dns_nameservers = ['8.8.8.8', '8.8.4.4']
 
 $private_subnet_cidr = '10.0.0.0/24'
-$public_subnet_cidr = '192.168.19.0/24'
-$public_subnet_gateway = '192.168.19.1'
-$public_subnet_allocation_pools = ['start=192.168.19.30,end=192.168.19.50']
+$public_subnet_cidr = '192.168.90.0/24'
+$public_subnet_gateway = '192.168.90.1'
+$public_subnet_allocation_pools = ['start=192.168.90.30,end=192.168.90.50']
 
 # Note: this is executed on the master
 $gateway = generate('/bin/sh', '-c', '/sbin/ip route show | /bin/grep default | /usr/bin/awk \'{print $3}\'')
