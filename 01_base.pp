@@ -4,7 +4,7 @@ class { 'apt': }
 apt::source { 'ubuntu-cloud':
   location          =>  'http://ubuntu-cloud.archive.canonical.com/ubuntu',
   repos             =>  'main',
-  release           =>  'trusty-updates/liberty',
+  release           =>  'trusty-updates/mitaka',
   include_src       => false,
   required_packages =>  'ubuntu-cloud-keyring',
 }
