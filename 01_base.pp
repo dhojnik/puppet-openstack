@@ -1,15 +1,21 @@
+### Base
+
 class { 'apt': }
 
-# TODO: required_packages is depricated
+package { 'ubuntu-cloud-keyring':
+  ensure                              => 'installed'
+}
+
 apt::source { 'ubuntu-cloud':
-  location          =>  'http://ubuntu-cloud.archive.canonical.com/ubuntu',
-  repos             =>  'main',
-  release           =>  'trusty-updates/mitaka',
-  include_src       => false,
-  required_packages =>  'ubuntu-cloud-keyring',
+  location                            =>  'http://ubuntu-cloud.archive.canonical.com/ubuntu',
+  repos                               =>  'main',
+  release                             =>  'trusty-updates/mitaka',
+  include                             => {
+    src                               => false
+  },
 }
 ->
 exec { 'apt-update':
-    command => '/usr/bin/apt-get update'
+  command                             => '/usr/bin/apt-get update'
 }
 -> Package <| |>

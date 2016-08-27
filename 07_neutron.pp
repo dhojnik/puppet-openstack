@@ -72,11 +72,7 @@ class { '::neutron':
 }
 
 class { 'neutron::server':
-  auth_user           => 'neutron',
-  auth_password       => $admin_password,
-  auth_tenant         => 'services',
   auth_uri            => "http://${local_ip}:5000/v2.0",
-  identity_uri        => "http://${local_ip}:35357",
   database_connection => "mysql://neutron:${admin_password}@${local_ip}/neutron?charset=utf8",
   sync_db             => true,
   api_workers         => $api_workers,

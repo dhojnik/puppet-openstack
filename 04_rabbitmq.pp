@@ -1,19 +1,15 @@
-$admin_password = 'rajalokan'
-
 ######## RabbitMQ
 
-# TODO: fix warnings
+$admin_password = 'rajalokan'
 
-class { '::rabbitmq':
-  service_ensure    => 'running',
-  port              => '5672',
-  delete_guest_user => true,
+package { 'rabbitmq-server':
+  ensure                              => 'installed'
 }
 
 rabbitmq_user { 'openstack':
-  admin    => false,
-  password => $admin_password,
-  tags     => ['openstack'],
+  admin                               => false,
+  password                            => $admin_password,
+  tags                                => ['openstack'],
 }
 
 rabbitmq_vhost { '/':
@@ -21,7 +17,7 @@ rabbitmq_vhost { '/':
 }
 
 rabbitmq_user_permissions { 'openstack@/':
-  configure_permission => '.*',
-  read_permission      => '.*',
-  write_permission     => '.*',
+  configure_permission                => '.*',
+  read_permission                     => '.*',
+  write_permission                    => '.*',
 }
